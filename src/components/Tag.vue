@@ -3,12 +3,14 @@ const props = defineProps({
   tag: {
     type: String,
     required: true,
-    default: "default",
+    default: "",
   },
 });
 </script>
 <template>
-  <button class="bg-slate-200 text-slate-600 font-semibold text-xs py-2 px-4 rounded flex items-center justify-center text-center">
+  <button
+    class="bg-slate-100 text-slate-600 font-semibold text-xs py-2 px-4 rounded flex items-center justify-center text-center capitalize"
+  >
     {{ tag }}
   </button>
 </template>

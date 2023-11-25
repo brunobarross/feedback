@@ -1,8 +1,12 @@
 <script setup>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import Tag from "./Tag.vue";
+import { useGlobalStore } from "../stores/GLOBAL.store";
+import { storeToRefs } from "pinia";
 
-const tags = ref(["UI", "UX", "Enhancement", "Bug", "Feature"]);
+
+
+const {categories} = storeToRefs(useGlobalStore())
 </script>
 
 <template>
@@ -11,7 +15,7 @@ const tags = ref(["UI", "UX", "Enhancement", "Bug", "Feature"]);
     <p class="text-white">Feedback Board</p>
   </div>
   <div class="tags mt-6 bg-white rounded gap-4 flex flex-wrap p-6">
-    <Tag v-for="tag in tags" :key="tag" :tag="tag" />
+    <Tag v-for="tag in categories" :key="tag.id" :tag="tag.name" />
 
   </div>
 </template>
