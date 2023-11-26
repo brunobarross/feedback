@@ -12,29 +12,22 @@ export const useGlobalStore = defineStore('global', () => {
     const categories = ref([]);
     const users = ref([]);
     const comments = ref([]);
-    
+
     const getCategories = async () => {
-        categories.value = []
         const querySnapshot = await getDocs(collection(db, "categories"));
-        querySnapshot.forEach((doc) => {
-            categories.value.push({
-                id: doc.id,
-                ...doc.data(),
-            });
-            console.log(doc.id, " => ", doc.data());
-        });
+        categories.value = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+        console.log(categories.value);
     };
 
     const getFeedbacks = async () => {
-        feedbacks.value = []
         const querySnapshot = await getDocs(collection(db, "feedbacks"));
-        querySnapshot.forEach((doc) => {
-            feedbacks.value.push({
-                id: doc.id,
-                ...doc.data(),
-            });
-            console.log(doc.id, " => ", doc.data());
-        });
+        feedbacks.value = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
     };
 
     const getSingleFeedback = async (id) => {
@@ -59,13 +52,11 @@ export const useGlobalStore = defineStore('global', () => {
     const getComments = async (id) => {
         try {
             const querySnapshot = await getDocs(collection(db, "comments"), where("feedbackId", "==", id));
-            querySnapshot.forEach((doc) => {
-                comments.value.push({
-                    id: doc.id,
-                    ...doc.data(),
-                });
-                console.log(doc.id, " => ", doc.data());
-            });
+            comments.value = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            console.log(comments.value);
 
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -103,15 +94,11 @@ export const useGlobalStore = defineStore('global', () => {
 
     const getUsers = async () => {
         try {
-            users.value = []
             const querySnapshot = await getDocs(collection(db, "users"));
-            querySnapshot.forEach((doc) => {
-                users.value.push({
-                    id: doc.id,
-                    ...doc.data(),
-                });
-                console.log(doc.id, " => ", doc.data());
-            });
+            users.value = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
         } catch (e) {
             console.error("Error adding document: ", e);
         }
