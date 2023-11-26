@@ -1,4 +1,4 @@
-import { collection, getDocs, getDoc, addDoc, doc, setDoc, where } from "firebase/firestore";
+import { collection, getDocs, getDoc, addDoc, doc, setDoc, where, deleteDoc } from "firebase/firestore";
 import { defineStore, storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { db } from "../services/firebase";
@@ -79,7 +79,7 @@ export const useGlobalStore = defineStore('global', () => {
         try {
             const docRef = await addDoc(collection(db, "comments"), comment);
             console.log("Document written with ID: ", docRef.id);
-            if(docRef.id){
+            if (docRef.id) {
                 await setDoc(doc(db, "feedbacks", comment.feedbackId), {
                     comments: [...comments.value, docRef.id]
                 }, { merge: true });
@@ -118,5 +118,18 @@ export const useGlobalStore = defineStore('global', () => {
         }
     };
 
-    return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getSingleFeedback, singleFeedback, getUsers, users, getComments, comments, createComment }
+    const removeComment = async (commentObj) => {
+        try {
+            const docRef = await deleteDoc(doc(db, "comments", commentObj.id))
+            await setDoc(doc(db, "feedbacks", commentObj.feedbackId), {
+                comments: comments.value.filter(comment => comment.id !== commentObj.id)
+            }, { merge: true });
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+
+
+    }
+
+    return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getSingleFeedback, singleFeedback, getUsers, users, getComments, comments, createComment, removeComment }
 })

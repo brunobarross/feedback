@@ -10,7 +10,7 @@ import FeedbackCard from "../components/FeedbackCard.vue";
 import TheCommentCard from "../components/TheCommentCard.vue";
 import { async } from "@firebase/util";
 
-const { getSingleFeedback, getUsers, getComments, createComment } = useGlobalStore();
+const { getSingleFeedback, getUsers, getComments, createComment, removeComment } = useGlobalStore();
 const { singleFeedback, comments } = storeToRefs(useGlobalStore());
 
 const {persistLogin} = useAuthStore();
@@ -37,6 +37,14 @@ const handleClickPostComment = async () => {
   getComments(route.params.id);
 };
 
+
+const handleClickRemoveComment = async (comment) => {
+  console.log(comment);
+  await removeComment(comment);
+  getSingleFeedback(route.params.id);
+  getComments(route.params.id);
+};
+
 onMounted(async() => {
   await persistLogin();
   await getSingleFeedback(route.params.id);
@@ -59,7 +67,7 @@ onMounted(async() => {
     <div class="bg-white mx-auto p-10 rounded mt-16">
       <h3 class="text-lg font-bold text-slate-700">Comments</h3>
       <div class="mt-8">
-        <TheCommentCard v-for="comment in comments" :comment="comment" />
+        <TheCommentCard v-for="comment in comments" :comment="comment" @remove-comment="handleClickRemoveComment" />
       </div>
 
     </div>

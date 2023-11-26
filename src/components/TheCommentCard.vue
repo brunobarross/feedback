@@ -3,6 +3,7 @@ import { ref, inject, watch, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useGlobalStore } from "../stores/GLOBAL.store";
 import { useAuthStore } from "../stores/auth.store";
+import { PhTrash } from "@phosphor-icons/vue";
 
 const props = defineProps({
   comment: {
@@ -11,6 +12,7 @@ const props = defineProps({
   },
 });
 
+const emits = defineEmits(["remove-comment"]);
 const { users } = storeToRefs(useGlobalStore());
 
 const usuarioComentario = computed(() => {
@@ -22,19 +24,29 @@ const usuarioComentario = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col border-b border-slate-100 pb-8" v-if="usuarioComentario">
-    <div class="flex items-center">
-      <div class="w-8 h-8 rounded-full">
-        <img :src="usuarioComentario.photoURL" class="w-9 h-9 rounded-full" />
+  <div
+    class="flex flex-col border-b border-slate-100 py-8"
+    v-if="usuarioComentario"
+  >
+    <div class="flex items-center justify-between">
+      <div class="flex items-center flex-1">
+        <div class="w-8 h-8 rounded-full">
+          <img :src="usuarioComentario.photoURL" class="w-9 h-9 rounded-full" />
+        </div>
+        <div class="ml-6">
+          <p class="text-sm font-bold text-slate-700">
+            {{ usuarioComentario.name }}
+          </p>
+          <div class="mt-4">
+            <p class="text-sm text-slate-700 mt-2">
+              {{ props.comment.content }}
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="ml-6">
-        <p class="text-sm font-bold text-slate-700">
-          {{ usuarioComentario.name }}
-        </p>
-      </div>
-    </div>
-    <div class="mt-4">
-      <p class="text-sm text-slate-700 mt-2">{{ props.comment.content }}</p>
+      <button class="flex items-center gap-2 text-slate-600 font-bold mt-4" @click="$emit('remove-comment', props.comment)">
+        <PhTrash />
+      </button>
     </div>
   </div>
 </template>
