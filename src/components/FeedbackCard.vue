@@ -69,7 +69,7 @@ const isDisabled = computed(() => {
           <Tag
             v-for="category in categoriasDoFeedback"
             class="mt-4"
-            :tag="category.name"
+            :tag="category"
           />
         </div>
       </div>

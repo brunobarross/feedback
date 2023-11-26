@@ -14,6 +14,24 @@ const { persistLogin } = useAuthStore();
 
 const { user } = storeToRefs(useAuthStore());
 
+const filterApplyed = ref(null)
+
+const handleFilteredFeedbacks = (tag) => {
+  filterApplyed.value = tag
+  const filterFeedbacks = feedbacks.value.filter((feedback) => {
+    return feedback.category.includes(tag);
+  });
+
+  if (filterFeedbacks.length === 0 || tag === 'all') {
+    getFeedbacks();
+  } else {
+    feedbacks.value = filterFeedbacks;
+
+  }
+};
+
+
+
 
 onMounted(async () => {
   persistLogin();
@@ -23,11 +41,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4">
-    <div class="col-span-3">
-      <LeftContent />
+  <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-4">
+    <div class="lg:col-span-3 hidden lg:block">
+      <LeftContent @filter="handleFilteredFeedbacks" :filter-applyed="filterApplyed"/>
     </div>
-    <div class="col-span-9">
+    <div class="lg:col-span-9">
       <TheHeader />
       <div class="mt-6">
         <FeedbackCard

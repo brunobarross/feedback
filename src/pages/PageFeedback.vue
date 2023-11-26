@@ -15,7 +15,7 @@ const { singleFeedback, comments } = storeToRefs(useGlobalStore());
 
 const {persistLogin} = useAuthStore();
 const { user } = storeToRefs(useAuthStore());
-const { users } = storeToRefs(useGlobalStore());
+
 
 const route = useRoute();
 const router = useRouter();
@@ -61,17 +61,17 @@ onMounted(async() => {
         <p>Go Back</p>
       </div>
     </RouterLink>
-    <div class="mt-16">
+    <div class="mt-4">
       <FeedbackCard v-if="singleFeedback" :feedback="singleFeedback" />
     </div>
-    <div class="bg-white mx-auto p-10 rounded mt-16">
+    <div class="bg-white mx-auto p-10 rounded mt-4">
       <h3 class="text-lg font-bold text-slate-700">Comments</h3>
-      <div class="mt-8">
-        <TheCommentCard v-for="comment in comments" :comment="comment" @remove-comment="handleClickRemoveComment" />
+      <div >
+        <TheCommentCard v-for="comment in comments" :comment="comment" :user="user" @remove-comment="handleClickRemoveComment" />
       </div>
 
     </div>
-    <div class="bg-white mx-auto p-10 rounded mt-16">
+    <div class="bg-white mx-auto p-10 rounded mt-4">
       <h3 class="text-lg font-bold text-slate-700">Add Comment</h3>
       <div class="mt-4">
         

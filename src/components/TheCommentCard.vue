@@ -5,15 +5,22 @@ import { useGlobalStore } from "../stores/GLOBAL.store";
 import { useAuthStore } from "../stores/auth.store";
 import { PhTrash } from "@phosphor-icons/vue";
 
+const { users } = storeToRefs(useGlobalStore());
+
+
 const props = defineProps({
   comment: {
+    type: Object,
+    required: true,
+  },
+  user: {
     type: Object,
     required: true,
   },
 });
 
 const emits = defineEmits(["remove-comment"]);
-const { users } = storeToRefs(useGlobalStore());
+
 
 const usuarioComentario = computed(() => {
   const usuarioEncontrado = users.value.find(
@@ -44,7 +51,7 @@ const usuarioComentario = computed(() => {
           </div>
         </div>
       </div>
-      <button class="flex items-center gap-2 text-slate-600 font-bold mt-4" @click="$emit('remove-comment', props.comment)">
+      <button v-if="props.user?.uid === props.comment.user " class="flex items-center gap-2 text-slate-600 font-bold mt-4" @click="$emit('remove-comment', props.comment)">
         <PhTrash />
       </button>
     </div>

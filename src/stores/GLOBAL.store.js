@@ -1,6 +1,6 @@
 import { collection, getDocs, getDoc, addDoc, doc, setDoc, where, deleteDoc } from "firebase/firestore";
 import { defineStore, storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { db } from "../services/firebase";
 import { useAuthStore } from "./auth.store";
 
@@ -130,6 +130,21 @@ export const useGlobalStore = defineStore('global', () => {
 
 
     }
+
+
+    watch(
+     () => categories.value,
+     (v) => {
+        categories.value.unshift({
+            name: 'All',
+            id: 'all'
+        })
+     },
+     {
+         immediate: true,
+      
+     }
+    )
 
     return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getSingleFeedback, singleFeedback, getUsers, users, getComments, comments, createComment, removeComment }
 })
