@@ -75,10 +75,24 @@ export const useGlobalStore = defineStore('global', () => {
 
     };
 
+    const createComment = async (comment) => {
+        try {
+            const docRef = await addDoc(collection(db, "comments"), comment);
+            console.log("Document written with ID: ", docRef.id);
+            if(docRef.id){
+                await setDoc(doc(db, "feedbacks", comment.feedbackId), {
+                    comments: [...comments.value, docRef.id]
+                }, { merge: true });
+            }
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+
+    }
+
     const sendUpVote = async (feedbackId) => {
         if (!user.value) return;
         try {
-
             const feedbackDoc = doc(db, "feedbacks", feedbackId);
             await setDoc(feedbackDoc, {
                 upvotes: {
@@ -104,5 +118,5 @@ export const useGlobalStore = defineStore('global', () => {
         }
     };
 
-    return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getSingleFeedback, singleFeedback, getUsers, users, getComments, comments }
+    return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getSingleFeedback, singleFeedback, getUsers, users, getComments, comments, createComment }
 })

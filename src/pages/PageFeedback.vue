@@ -10,9 +10,10 @@ import FeedbackCard from "../components/FeedbackCard.vue";
 import TheCommentCard from "../components/TheCommentCard.vue";
 import { async } from "@firebase/util";
 
-const { getSingleFeedback, getUsers, getComments } = useGlobalStore();
+const { getSingleFeedback, getUsers, getComments, createComment } = useGlobalStore();
 const { singleFeedback, comments } = storeToRefs(useGlobalStore());
 
+const {persistLogin} = useAuthStore();
 const { user } = storeToRefs(useAuthStore());
 const { users } = storeToRefs(useGlobalStore());
 
@@ -23,9 +24,23 @@ const models = ref({
   description: "",
 });
 
-onMounted(async() => {
+
+const handleClickPostComment = async () => {
+  const comment = {
+    content: models.value.description,
+    user: user.value.uid,
+    feedbackId: singleFeedback.value.id,
+  };
+  await createComment(comment);
+  models.value.description = "";
   getSingleFeedback(route.params.id);
   getComments(route.params.id);
+};
+
+onMounted(async() => {
+  await persistLogin();
+  await getSingleFeedback(route.params.id);
+  await getComments(route.params.id);
   getUsers();
 });
 </script>
@@ -51,6 +66,7 @@ onMounted(async() => {
     <div class="bg-white mx-auto p-10 rounded mt-16">
       <h3 class="text-lg font-bold text-slate-700">Add Comment</h3>
       <div class="mt-4">
+        
         <textarea
           v-model="models.description"
           class="bg-slate-200 w-full rounded py-2 px-4 mt-4 resize-none min-h-[160px]"
@@ -59,6 +75,7 @@ onMounted(async() => {
           <TheButton
             text="Post Comment"
             class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12 ml-auto"
+            @click="handleClickPostComment"
           />
         </div>
       </div>
