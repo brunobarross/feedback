@@ -66,15 +66,18 @@ onMounted(async() => {
 
 <template>
   <div class="max-w-[1000px] mx-auto">
-    <div class="flex justifu-between">
+    <div class="flex justify-between">
       <RouterLink to="/">
-      <div class="flex items-center gap-2 text-slate-600 font-bold">
+      <div class="flex items-center gap-2 dark:text-slate-100 text-slate-600 font-bold">
         <PhArrowLeft />
         <p>Go Back</p>
       </div>
     </RouterLink>
-
-      <TheButton text="Edit Feedback" class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12 ml-auto" @click="()=> $router.push({
+  
+   
+      <TheButton
+      v-if="user?.uid === singleFeedback?.owner"
+      text="Edit Feedback" class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12 ml-auto" @click="()=> $router.push({
         name: 'edit_feedback',
         params: { id: singleFeedback?.id },
       })">
@@ -99,7 +102,7 @@ onMounted(async() => {
       </div>
 
     </div>
-    <div class="bg-white mx-auto p-10 rounded mt-4">
+    <div class="bg-white mx-auto p-10 rounded mt-4" v-if="user?.uid">
       <h3 class="text-lg font-bold text-slate-700">Add Comment</h3>
       <div class="mt-4">
         

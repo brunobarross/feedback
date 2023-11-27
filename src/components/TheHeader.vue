@@ -24,7 +24,8 @@ const suggestions = computed(()=>{
 
 </script>
 <template>
-  <header class="bg-slate-900 p-6 rounded">
+  <header class="dark:bg-slate-800
+  bg-slate-900 p-6 rounded hidden lg:block">
 
     <div class="flex justify-between">
       <div class="flex items-center">

@@ -32,7 +32,7 @@ const usuarioComentario = computed(() => {
 
 <template>
   <div
-    class="flex flex-col border-b border-slate-100 py-8"
+    class="flex flex-col border-b dark:border-slate-200 border-slate-100 py-8"
     v-if="usuarioComentario"
   >
     <div class="flex items-center justify-between">
@@ -51,8 +51,8 @@ const usuarioComentario = computed(() => {
           </div>
         </div>
       </div>
-      <button v-if="props.user?.uid === props.comment.user " class="flex items-center gap-2 text-slate-600 font-bold mt-4" @click="$emit('remove-comment', props.comment)">
-        <PhTrash />
+      <button v-if="props.user?.uid === props.comment.user " class="flex items-center gap-2 text-red-600 font-bold mt-4" @click="$emit('remove-comment', props.comment)">
+        <PhTrash size="18" />
       </button>
     </div>
   </div>

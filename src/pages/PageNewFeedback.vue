@@ -12,7 +12,13 @@ const models = ref({
   category: null,
   description: "",
 });
-const { getCategories, createFeedback, editFeedback, getFeedbacks, removeFeedback} = useGlobalStore();
+const {
+  getCategories,
+  createFeedback,
+  editFeedback,
+  getFeedbacks,
+  removeFeedback,
+} = useGlobalStore();
 const { categories, feedbacks } = storeToRefs(useGlobalStore());
 
 const { user } = storeToRefs(useAuthStore());
@@ -61,46 +67,42 @@ const handleClickRemoveFeedback = async () => {
   router.push({ name: "home" });
 };
 
-
 const dataFeedback = computed(() => {
   return feedbacks.value.find((feedback) => feedback.id === route.params.id);
 });
 
-
 watch(
- () => dataFeedback.value,
- (v) => {
-    if(!v) return
-    console.log(v)
-    models.value.title = v.title
-    models.value.category = v.category
-    models.value.description = v.description
- },{
-    immediate: true
- }
-
-)
-
-
-
+  () => dataFeedback.value,
+  (v) => {
+    if (!v) return;
+    console.log(v);
+    models.value.title = v.title;
+    models.value.category = v.category;
+    models.value.description = v.description;
+  },
+  {
+    immediate: true,
+  }
+);
 
 onMounted(() => {
   getCategories();
-  
 });
 </script>
 
 <template>
-  <div class="max-w-[600px] mx-auto ">
+  <div class="max-w-[600px] mx-auto">
     <RouterLink to="/">
-      <div class="flex items-center gap-2 text-slate-600 font-bold">
+      <div
+        class="flex items-center gap-2 dark:text-slate-100 text-slate-600 font-bold"
+      >
         <PhArrowLeft />
         <p>Go Back</p>
       </div>
     </RouterLink>
     <div class="bg-white mx-auto p-10 rounded mt-16">
       <h2 class="text-2xl font-bold text-slate-700">Create New Feedback</h2>
-      <form class="flex flex-col mt-6">
+      <div class="flex flex-col mt-6">
         <div>
           <p class="text-sm font-bold text-slate-700">Feedback Title</p>
           <p class="text-sm text-slate-400">
@@ -137,7 +139,10 @@ onMounted(() => {
             class="bg-slate-200 w-full rounded py-2 px-4 mt-4 resize-none min-h-[160px]"
           ></textarea>
         </div>
-        <div class="flex justify-end mt-10 gap-4" v-if="!route.meta.edit">
+        <div
+          class="flex justify-end mt-10 gap-4"
+          v-if="!route.meta.edit && user?.uid"
+        >
           <TheButton
             text="Cancel"
             class="bg-slate-600 text-white font-semibold hover:bg-slate-800 h-12"
@@ -149,23 +154,29 @@ onMounted(() => {
             @click="handleClickAddFeedback"
           />
         </div>
-        <div class="flex justify-between mt-10 gap-4" v-else>
-          <TheButton text="Delete" class="bg-red-600 text-white font-semibold hover:bg-red-800 h-12" @click="handleClickRemoveFeedback" />
+        <div
+          class="flex justify-between mt-10 gap-4"
+          v-else-if="route.meta.edit && user?.uid"
+        >
+          <TheButton
+            text="Delete"
+            class="bg-red-600 text-white font-semibold hover:bg-red-800 h-12"
+            @click="handleClickRemoveFeedback"
+          />
           <div class="flex gap-4 items-center">
             <TheButton
-            text="Cancel"
-            class="bg-slate-600 text-white font-semibold hover:bg-slate-800 h-12"
-            @click="$router.push({ name: 'home' })"
-          />
-          <TheButton
-            text="Save Changes"
-            class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12"
-            @click="handleClickEditFeedback"
-          />
+              text="Cancel"
+              class="bg-slate-600 text-white font-semibold hover:bg-slate-800 h-12"
+              @click="$router.push({ name: 'home' })"
+            />
+            <TheButton
+              text="Save Changes"
+              class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12"
+              @click="handleClickEditFeedback"
+            />
           </div>
-
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>

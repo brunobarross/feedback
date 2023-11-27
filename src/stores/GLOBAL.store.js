@@ -181,6 +181,8 @@ export const useGlobalStore = defineStore('global', () => {
         }
     )
 
+    
+
 
     return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getUsers, users, getComments, comments, createComment, removeComment, removeUpVote, handleFilteredFeedbacks, feedbackFiltrado, filterApplyed, editFeedback, removeFeedback }
 })

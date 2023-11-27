@@ -15,7 +15,7 @@ const emits = defineEmits(["up-vote"]);
 </script>
 
 <template>
-  <button class="bg-slate-100 flex flex-col items-center p-4 rounded-lg transition-all hover:bg-slate-300 cursor-pointer" 
+  <button class="bg-slate-100 flex gap-2 lg:gap-0 lg:flex-col items-center p-4 rounded-lg transition-all hover:bg-slate-300 cursor-pointer" 
   :class="{'!opacity-50 !cursor-not-allowed pointer-events-none': isDisabled}"
   :disabled="isDisabled"
   @click.stop="$emit('up-vote')"

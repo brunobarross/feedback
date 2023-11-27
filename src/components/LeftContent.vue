@@ -19,22 +19,24 @@ const props = defineProps({
 
 <template>
   <div
-    class="bg-gradient-to-tl from-slate-700 p-6 flex flex-col justify-end items-start min-h-[200px] rounded"
+    class="bg-gradient-to-tr from-blue-700 p-6 flex flex-col justify-end items-start min-h-[160px] rounded"
   >
 
     <h1 class="text-white text-xl">Front-end Mentor</h1>
     <p class="text-white">Feedback Board</p>
   </div>
-  <div class="tags mt-6 bg-white rounded gap-4 flex flex-wrap p-6">
+  <div class="tags mt-12 
+   rounded gap-4 flex flex-wrap">
 
     <Tag
       v-for="tag in categories"
       :key="tag.id"
       :tag="tag"
       @filter="(tagId) => $emit('filter', tagId)"
-      class="hover:bg-slate-600 hover:text-slate-100"
+      class="hover:bg-pink-600 
+      hover:text-slate-100"
       :class="{
-        'bg-slate-600 !text-slate-100': props.filterApplyed === tag.id
+        '!bg-pink-600 !text-slate-100': props.filterApplyed === tag.id
       }"
     />
   </div>

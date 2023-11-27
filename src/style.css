@@ -8,15 +8,16 @@ body,h1,h2,h3,p,ul,li{
   padding: 0;
 }
 
-body{
-  background: #f7f8fd;
+
+
+
+
+@layer base {
+  body {
+    @apply dark:bg-gray-900 bg-gray-100;
+  }
+  #app {
+    @apply max-w-screen-xl mx-auto lg:p-8;
+  
+  }
 }
-
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-}
-
