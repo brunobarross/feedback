@@ -1,12 +1,12 @@
 <script setup>
-import { ref, inject, watch, computed } from "vue";
+import { ref,computed } from "vue";
 import { useGlobalStore } from "../stores/GLOBAL.store";
 import { PhChatCircle } from "@phosphor-icons/vue";
 import TheUpVoteButton from "./TheUpVoteButton.vue";
-import { RouterLink } from "vue-router";
 import Tag from "./Tag.vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "../stores/auth.store";
+
 
 const props = defineProps({
   feedback: {
@@ -15,13 +15,15 @@ const props = defineProps({
   },
 });
 
-const { sendUpVote } = useGlobalStore();
-const { categories } = storeToRefs(useGlobalStore());
+const { sendUpVote, getFeedbacks, handleFilteredFeedbacks} = useGlobalStore();
+const { categories, filterApplyed } = storeToRefs(useGlobalStore());
 
 const { user } = storeToRefs(useAuthStore());
 
 const handleClickUpvote = async () => {
   await sendUpVote(props.feedback.id, user);
+  await getFeedbacks();
+  handleFilteredFeedbacks(filterApplyed.value);
 };
 
 const categoriasDoFeedback = computed(() => {
@@ -54,6 +56,7 @@ const isDisabled = computed(() => {
       })
     "
   >
+
     <div class="flex justify-between items-center">
       <div class="flex items-start">
         <TheUpVoteButton

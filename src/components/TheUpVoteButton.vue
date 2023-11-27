@@ -18,7 +18,7 @@ const emits = defineEmits(["up-vote"]);
   <button class="bg-slate-100 flex flex-col items-center p-4 rounded-lg transition-all hover:bg-slate-300 cursor-pointer" 
   :class="{'!opacity-50 !cursor-not-allowed pointer-events-none': isDisabled}"
   :disabled="isDisabled"
-  @click="$emit('up-vote')"
+  @click.stop="$emit('up-vote')"
 
   >
     <PhArrowCircleUp color="#475569" :size="24" />

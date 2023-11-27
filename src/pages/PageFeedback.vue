@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, computed} from "vue";
 import { useGlobalStore } from "../stores/GLOBAL.store";
 import { useAuthStore } from "../stores/auth.store";
 import { storeToRefs } from "pinia";
@@ -8,10 +8,13 @@ import { PhArrowLeft } from "@phosphor-icons/vue";
 import TheButton from "../components/TheButton.vue";
 import FeedbackCard from "../components/FeedbackCard.vue";
 import TheCommentCard from "../components/TheCommentCard.vue";
-import { async } from "@firebase/util";
+import TheEmptyItem from "../components/TheEmptyItem.vue";
+import { RouterLink } from "vue-router";
 
-const { getSingleFeedback, getUsers, getComments, createComment, removeComment } = useGlobalStore();
-const { singleFeedback, comments } = storeToRefs(useGlobalStore());
+
+
+const { getUsers, getComments, createComment, removeComment, getFeedbacks } = useGlobalStore();
+const { comments, feedbacks} = storeToRefs(useGlobalStore());
 
 const {persistLogin} = useAuthStore();
 const { user } = storeToRefs(useAuthStore());
@@ -26,6 +29,7 @@ const models = ref({
 
 
 const handleClickPostComment = async () => {
+  if(!models.value.description.length) return
   const comment = {
     content: models.value.description,
     user: user.value.uid,
@@ -33,41 +37,65 @@ const handleClickPostComment = async () => {
   };
   await createComment(comment);
   models.value.description = "";
-  getSingleFeedback(route.params.id);
+  getFeedbacks();
   getComments(route.params.id);
 };
 
 
 const handleClickRemoveComment = async (comment) => {
-  console.log(comment);
   await removeComment(comment);
-  getSingleFeedback(route.params.id);
+  getFeedbacks();
   getComments(route.params.id);
 };
 
+
+
+
+const singleFeedback = computed(() => {
+  return feedbacks.value.find((feedback) => feedback.id === route.params.id);
+});
+
 onMounted(async() => {
   await persistLogin();
-  await getSingleFeedback(route.params.id);
+  await getFeedbacks();
   await getComments(route.params.id);
   getUsers();
+
 });
 </script>
 
 <template>
-  <div class="max-w-[1000px] mx-auto py-20">
-    <RouterLink to="/">
+  <div class="max-w-[1000px] mx-auto">
+    <div class="flex justifu-between">
+      <RouterLink to="/">
       <div class="flex items-center gap-2 text-slate-600 font-bold">
         <PhArrowLeft />
         <p>Go Back</p>
       </div>
     </RouterLink>
+
+      <TheButton text="Edit Feedback" class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12 ml-auto" @click="()=> $router.push({
+        name: 'edit_feedback',
+        params: { id: singleFeedback?.id },
+      })">
+        <template #icon>
+          <PhPencil />
+        </template>
+      </TheButton>
+
+    </div>
+    
     <div class="mt-4">
       <FeedbackCard v-if="singleFeedback" :feedback="singleFeedback" />
     </div>
     <div class="bg-white mx-auto p-10 rounded mt-4">
       <h3 class="text-lg font-bold text-slate-700">Comments</h3>
       <div >
-        <TheCommentCard v-for="comment in comments" :comment="comment" :user="user" @remove-comment="handleClickRemoveComment" />
+        <template v-if="comments.length">
+          <TheCommentCard v-for="comment in comments" :comment="comment" :user="user" @remove-comment="handleClickRemoveComment" />
+        </template>
+        <TheEmptyItem v-else text="There are no comments to display..." class="mt-8" />
+      
       </div>
 
     </div>
@@ -82,7 +110,7 @@ onMounted(async() => {
         <div class="flex mt-4">
           <TheButton
             text="Post Comment"
-            class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12 ml-auto"
+            class="bg-pink-600 text-white font-semibold hover:bg-pink-800 h-12 ml-auto"
             @click="handleClickPostComment"
           />
         </div>

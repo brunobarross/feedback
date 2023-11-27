@@ -8,10 +8,13 @@ import { useAuthStore } from "./auth.store";
 export const useGlobalStore = defineStore('global', () => {
     const { user } = storeToRefs(useAuthStore());
     const feedbacks = ref([]);
-    const singleFeedback = ref(null);
     const categories = ref([]);
     const users = ref([]);
     const comments = ref([]);
+
+    const filterApplyed = ref('')
+
+    const feedbackFiltrado = ref([])
 
     const getCategories = async () => {
         const querySnapshot = await getDocs(collection(db, "categories"));
@@ -30,24 +33,6 @@ export const useGlobalStore = defineStore('global', () => {
         }));
     };
 
-    const getSingleFeedback = async (id) => {
-        try {
-            const querySnapshot = await getDocs(collection(db, "feedbacks"));
-            const docSnap = await getDoc(doc(db, "feedbacks", id));
-            if (docSnap.exists()) {
-                singleFeedback.value = {
-                    id: docSnap.id,
-                    ...docSnap.data(),
-                };
-
-            } else {
-                console.log("No such document!");
-            }
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
-
-    }
 
     const getComments = async (id) => {
         try {
@@ -75,6 +60,21 @@ export const useGlobalStore = defineStore('global', () => {
 
     };
 
+    const editFeedback = async (obj, feedback) => {
+        console.log(feedback);
+        try {
+            debugger
+            const feedbackDoc = doc(db, "feedbacks", feedback.id);
+            const docRef = await setDoc(feedbackDoc, {
+               ...obj
+            }, { merge: true });
+            console.log("Document written with ID: ");
+        }
+        catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    }
+
     const createComment = async (comment) => {
         try {
             const docRef = await addDoc(collection(db, "comments"), comment);
@@ -94,10 +94,24 @@ export const useGlobalStore = defineStore('global', () => {
         if (!user.value) return;
         try {
             const feedbackDoc = doc(db, "feedbacks", feedbackId);
+            const feedbackAtual = feedbacks.value.find(feedback => feedback.id === feedbackId);
+            console.log(feedbackAtual);
             await setDoc(feedbackDoc, {
-                upvotes: {
-                    [user.value.uid]: true
-                }
+                upvotes: feedbackAtual.upvotes.includes(user.value.uid) ? feedbackAtual.upvotes : [...feedbackAtual.upvotes, user.value.uid]
+            }, { merge: true });
+        }
+        catch (e) {
+            console.error("Error adding document: ", e);
+        }
+
+    }
+
+    const removeUpVote = async (feedbackId) => {
+        if (!user.value) return;
+        try {
+            const feedbackDoc = doc(db, "feedbacks", feedbackId);
+            await setDoc(feedbackDoc, {
+                upvotes: singleFeedback.value.upvotes.filter(upvote => upvote !== user.value.uid)
             }, { merge: true });
         }
         catch (e) {
@@ -131,20 +145,42 @@ export const useGlobalStore = defineStore('global', () => {
 
     }
 
+    const removeFeedback = async (feedbackId) =>{
+        try {
+            const docRef = await deleteDoc(doc(db, "feedbacks", feedbackId))
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    }
+
+
+    const handleFilteredFeedbacks = (tag) => {
+        console.log(tag);
+        filterApplyed.value = tag
+        const filterFeedbacks = feedbacks.value.filter((feedback) => {
+            return feedback.category.includes(tag);
+        });
+
+        if (tag === 'all' && !filterFeedbacks.length) feedbackFiltrado.value = feedbacks.value
+        else if (tag !== 'all' && !filterFeedbacks.length) feedbackFiltrado.value = []
+        else feedbackFiltrado.value = filterFeedbacks;
+
+    }
+
 
     watch(
-     () => categories.value,
-     (v) => {
-        categories.value.unshift({
-            name: 'All',
-            id: 'all'
-        })
-     },
-     {
-         immediate: true,
-      
-     }
+        () => categories.value,
+        (v) => {
+            v.unshift({
+                name: 'All',
+                id: 'all'
+            })
+        },
+        {
+            immediate: true,
+        }
     )
 
-    return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getSingleFeedback, singleFeedback, getUsers, users, getComments, comments, createComment, removeComment }
+
+    return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getUsers, users, getComments, comments, createComment, removeComment, removeUpVote, handleFilteredFeedbacks, feedbackFiltrado, filterApplyed, editFeedback, removeFeedback }
 })

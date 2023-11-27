@@ -1,35 +1,33 @@
 <script setup>
-import { ref, onMounted, provide } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useGlobalStore } from "../stores/GLOBAL.store";
 import { useAuthStore } from "../stores/auth.store";
 import LeftContent from "../components/LeftContent.vue";
 import TheHeader from "../components/TheHeader.vue";
 import FeedbackCard from "../components/FeedbackCard.vue";
+import TheEmptyItem from "../components/TheEmptyItem.vue";
 
-const { getFeedbacks, getCategories } = useGlobalStore();
-const { feedbacks, categories } = storeToRefs(useGlobalStore());
+const { getFeedbacks, getCategories, handleFilteredFeedbacks } = useGlobalStore();
+const { feedbacks,  feedbackFiltrado, filterApplyed } = storeToRefs(useGlobalStore());
 
 const { persistLogin } = useAuthStore();
 
 const { user } = storeToRefs(useAuthStore());
 
-const filterApplyed = ref(null)
 
-const handleFilteredFeedbacks = (tag) => {
-  filterApplyed.value = tag
-  const filterFeedbacks = feedbacks.value.filter((feedback) => {
-    return feedback.category.includes(tag);
-  });
 
-  if (filterFeedbacks.length === 0 || tag === 'all') {
-    getFeedbacks();
-  } else {
-    feedbacks.value = filterFeedbacks;
+watch(
+ () => feedbacks.value,
+ (v) => {
+  feedbackFiltrado.value = v
+ },
+ {
+  immediate: true
+ }
+ 
 
-  }
-};
-
+)
 
 
 
@@ -46,14 +44,17 @@ onMounted(async () => {
       <LeftContent @filter="handleFilteredFeedbacks" :filter-applyed="filterApplyed"/>
     </div>
     <div class="lg:col-span-9">
-      <TheHeader />
-      <div class="mt-6">
+      <TheHeader :feedbacks="feedbackFiltrado"/>
+      <div class="mt-6" v-if="feedbackFiltrado.length">
         <FeedbackCard
-          v-for="feedback in feedbacks"
+          v-for="feedback in feedbackFiltrado"
           :key="feedback.id"
           :feedback="feedback"
         />
       </div>
+      <div v-else class="mt-6 min-h-[200px] flex flex-col justify-center">
+          <TheEmptyItem  text="There are no feedbacks to display..."  />
+        </div>
     </div>
   </div>
 </template>

@@ -14,7 +14,6 @@ const props = defineProps({
   }
 })
 
-const filterApplyed = inject('filterApplyed')
 
 </script>
 
@@ -35,8 +34,7 @@ const filterApplyed = inject('filterApplyed')
       @filter="(tagId) => $emit('filter', tagId)"
       class="hover:bg-slate-600 hover:text-slate-100"
       :class="{
-        'bg-slate-600': props.filterApplyed === tag.id,
-        'text-slate-100': props.filterApplyed === tag.id
+        'bg-slate-600 !text-slate-100': props.filterApplyed === tag.id
       }"
     />
   </div>

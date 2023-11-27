@@ -3,25 +3,22 @@ import { computed } from "vue";
 import TheButton from "./TheButton.vue";
 import { PhPlus, PhUser } from "@phosphor-icons/vue";
 import { useAuthStore } from "../stores/auth.store";
-import { RouterLink } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useGlobalStore } from "../stores/GLOBAL.store";
 const props = defineProps({
-  sugestions: {
-    type: Number,
-    default: 0,
-  },
+  feedbacks:{
+    type: Array,
+    required: true
+  }
+
 });
 
 const { makeLogin, signOut } = useAuthStore();
-const {feedbacks} = storeToRefs(useGlobalStore())
-
 
 const { user } = storeToRefs(useAuthStore());
 
 const suggestions = computed(()=>{
-  if(!feedbacks.value.length) return '0 Suggestions'
-  return feedbacks.value.length > 1 ? `${feedbacks.value.length} Suggestions` : `${feedbacks.value.length} Suggestion`
+  if(!props.feedbacks.length) return '0 Suggestions'
+  return props.feedbacks.length > 1 ? `${props.feedbacks.length} Suggestions` : `${props.feedbacks.length} Suggestion`
 })
 
 
@@ -53,7 +50,7 @@ const suggestions = computed(()=>{
       </div>
       <div class="flex items-center gap-6">
         <h3 v-if="user?.uid" class="text-white">
-          Olá, {{ user.displayName }}!
+          Hello, {{ user.displayName }}!
         </h3>
         <TheButton
           v-if="user?.uid"
@@ -77,7 +74,7 @@ const suggestions = computed(()=>{
         </TheButton>
         <TheButton
           v-else
-          text="Sair"
+          text="Logout"
           class="bg-red-600 text-white font-semibold hover:bg-red-800"
           @click="signOut"
         >
