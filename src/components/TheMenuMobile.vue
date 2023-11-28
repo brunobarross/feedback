@@ -27,7 +27,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="bg-blue-800 fixed top-20 right-0 min-h-screen w-[80vw] z-[1000] px-4 flex flex-col">
+    <div class="bg-blue-800 fixed top-20 right-0 min-h-screen w-[80vw] z-[1000] px-4 flex lg:hidden flex-col">
         <div class="flex justify-between items-center">
             <h3 v-if="user?.uid" class="text-white text-sm ">
           Hello, {{ user.displayName }}!
