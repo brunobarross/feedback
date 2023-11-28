@@ -40,21 +40,21 @@ onMounted(async () => {
 </script>
 
 <template>
-  <TheHeaderMobile/>
+  <TheHeaderMobile :feedbacks="feedbackFiltrado"/>
   <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-4">
     <div class="lg:col-span-3 hidden lg:block">
       <LeftContent @filter="handleFilteredFeedbacks" :filter-applyed="filterApplyed"/>
     </div>
     <div class="lg:col-span-9 px-4">
       <TheHeader :feedbacks="feedbackFiltrado"/>
-      <div class="mt-6" v-if="feedbackFiltrado.length">
+      <div class="mt-10 lg:mt-6" v-if="feedbackFiltrado.length">
         <FeedbackCard
           v-for="feedback in feedbackFiltrado"
           :key="feedback.id"
           :feedback="feedback"
         />
       </div>
-      <div v-else class="mt-6 min-h-[200px] flex flex-col justify-center bg-white rounded">
+      <div v-else class="mt-6 min-h-[180px] flex flex-col justify-center dark:bg-slate-800 bg-white rounded">
           <TheEmptyItem  text="There are no feedbacks to display..."  />
         </div>
     </div>

@@ -22,7 +22,7 @@ const props = defineProps({
     class="bg-gradient-to-tr from-blue-700 p-6 flex flex-col justify-end items-start min-h-[160px] rounded"
   >
 
-    <h1 class="text-white text-xl">Front-end Mentor</h1>
+    <h1 class="text-white text-xl">Project Name</h1>
     <p class="text-white">Feedback Board</p>
   </div>
   <div class="tags mt-12 

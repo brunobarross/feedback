@@ -65,10 +65,10 @@ onMounted(async() => {
 </script>
 
 <template>
-  <div class="max-w-[1000px] mx-auto">
-    <div class="flex justify-between">
+  <div class="max-w-[1000px] mx-auto px-4 lg:px-0 my-8 lg:my-0">
+    <div class="flex justify-between items-center">
       <RouterLink to="/">
-      <div class="flex items-center gap-2 dark:text-slate-100 text-slate-600 font-bold">
+      <div class="flex items-center gap-2 dark:text-slate-100 text-slate-600 font-bold text-xs lg:text-base">
         <PhArrowLeft />
         <p>Go Back</p>
       </div>
@@ -77,7 +77,7 @@ onMounted(async() => {
    
       <TheButton
       v-if="user?.uid === singleFeedback?.owner"
-      text="Edit Feedback" class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12 ml-auto" @click="()=> $router.push({
+      text="Edit Feedback" class="bg-purple-600 text-white font-semibold hover:bg-purple-800 lg:h-12 ml-auto text-xs lg:text-base" @click="()=> $router.push({
         name: 'edit_feedback',
         params: { id: singleFeedback?.id },
       })">
@@ -88,11 +88,12 @@ onMounted(async() => {
 
     </div>
     
-    <div class="mt-4">
+    <div class="mt-8 lg:mt-6">
       <FeedbackCard v-if="singleFeedback" :feedback="singleFeedback" />
     </div>
-    <div class="bg-white mx-auto p-10 rounded mt-4">
-      <h3 class="text-lg font-bold text-slate-700">Comments</h3>
+
+    <div class="dark:bg-slate-600 bg-white mx-auto p-6 lg:p-10 rounded mt-4">
+      <h3 class="text-base lg:text-lg font-bold dark:text-white text-slate-700">Comments</h3>
       <div >
         <template v-if="comments.length">
           <TheCommentCard v-for="comment in comments" :comment="comment" :user="user" @remove-comment="handleClickRemoveComment" />
@@ -102,18 +103,18 @@ onMounted(async() => {
       </div>
 
     </div>
-    <div class="bg-white mx-auto p-10 rounded mt-4" v-if="user?.uid">
-      <h3 class="text-lg font-bold text-slate-700">Add Comment</h3>
+    <div class="dark:bg-slate-600 bg-white mx-auto p-6 lg:p-10 rounded mt-4" v-if="user?.uid">
+      <h3 class="text-base lg:text-lg font-bold dark:text-white text-slate-700">Add Comment</h3>
       <div class="mt-4">
         
         <textarea
           v-model="models.description"
-          class="bg-slate-200 w-full rounded py-2 px-4 mt-4 resize-none min-h-[160px]"
+          class="bg-slate-700 dark:text-slate-200 w-full rounded py-2 px-4 mt-4 resize-none min-h-[160px]"
         ></textarea>
         <div class="flex mt-4">
           <TheButton
             text="Post Comment"
-            class="bg-pink-600 text-white font-semibold hover:bg-pink-800 h-12 ml-auto"
+            class="bg-pink-600 text-white font-semibold hover:bg-pink-800 h-8 lg:h-12 ml-auto text-xs lg:text-base"
             @click="handleClickPostComment"
           />
         </div>

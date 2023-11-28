@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <button class="flex items-center justify-center gap-1 py-2 px-4 rounded-lg transition-all">
+  <button class="flex items-center justify-center gap-1 py-2 px-4 rounded transition-all">
     <slot name="icon"></slot>
     {{ text }}
   </button>

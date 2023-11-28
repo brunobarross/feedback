@@ -91,36 +91,36 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-[600px] mx-auto">
+  <div class="max-w-[600px] mx-auto px-4 lg:px-0 my-8 lg:my-0">
     <RouterLink to="/">
       <div
-        class="flex items-center gap-2 dark:text-slate-100 text-slate-600 font-bold"
+        class="flex items-center gap-2 dark:text-slate-100 text-slate-600 font-bold text-xs lg:text-base"
       >
         <PhArrowLeft />
         <p>Go Back</p>
       </div>
     </RouterLink>
-    <div class="bg-white mx-auto p-10 rounded mt-16">
-      <h2 class="text-2xl font-bold text-slate-700">Create New Feedback</h2>
+    <div class="bg-white mx-auto px-6 py-8 lg:px-8 lg:py-10 rounded mt-12 lg:mt-16">
+      <h2 class="text-lg lg:text-2xl font-bold text-slate-700">Create New Feedback</h2>
       <div class="flex flex-col mt-6">
         <div>
-          <p class="text-sm font-bold text-slate-700">Feedback Title</p>
-          <p class="text-sm text-slate-400">
+          <p class="text-xs lg:text-sm font-bold text-slate-700">Feedback Title</p>
+          <p class="text-xs lg:text-sm  text-slate-400">
             Add a short, descriptive headline
           </p>
           <input
             type="text"
             v-model="models.title"
-            class="bg-slate-200 w-full rounded py-2 px-4 mt-4"
+            class="bg-slate-200 w-full rounded py-2 px-4 mt-4 text-xs lg:text-sm "
           />
         </div>
         <div class="mt-6">
-          <p class="text-sm font-bold text-slate-700">Category</p>
-          <p class="text-sm text-slate-400">
+          <p class="text-xs lg:text-sm  font-bold text-slate-700">Category</p>
+          <p class="text-xs lg:text-sm  text-slate-400">
             Choose a category for your feedback
           </p>
           <select
-            class="bg-slate-200 w-full rounded py-2 px-4 mt-4"
+            class="bg-slate-200 w-full rounded py-2 px-4 mt-4 text-xs lg:text-sm "
             v-model="models.category"
           >
             <option v-for="category in categories" :value="category.id">
@@ -129,14 +129,14 @@ onMounted(() => {
           </select>
         </div>
         <div class="mt-6">
-          <p class="text-sm font-bold text-slate-700">Feedback Detail</p>
-          <p class="text-sm text-slate-400">
+          <p class="text-xs lg:text-sm  font-bold text-slate-700">Feedback Detail</p>
+          <p class="text-xs lg:text-sm  text-slate-400">
             Include any specific comments on what should be improved, added,
             etc.
           </p>
           <textarea
             v-model="models.description"
-            class="bg-slate-200 w-full rounded py-2 px-4 mt-4 resize-none min-h-[160px]"
+            class="bg-slate-200 w-full rounded py-2 px-4 mt-4 resize-none min-h-[100px] lg:min-h-[160px] text-xs lg:text-sm "
           ></textarea>
         </div>
         <div
@@ -145,33 +145,33 @@ onMounted(() => {
         >
           <TheButton
             text="Cancel"
-            class="bg-slate-600 text-white font-semibold hover:bg-slate-800 h-12"
+            class="bg-slate-600 text-white font-semibold hover:bg-slate-800 h-10 lg:h-12 text-xs lg:text-base"
             @click="$router.push({ name: 'home' })"
           />
           <TheButton
             text="Add Feedback"
-            class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12"
+            class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-10 lg:h-12  text-xs lg:text-base"
             @click="handleClickAddFeedback"
           />
         </div>
         <div
-          class="flex justify-between mt-10 gap-4"
+          class="flex justify-between mt-6 lg:mt-10 lg:gap-4"
           v-else-if="route.meta.edit && user?.uid"
         >
           <TheButton
             text="Delete"
-            class="bg-red-600 text-white font-semibold hover:bg-red-800 h-12"
+            class="bg-red-600 text-white font-semibold hover:bg-red-800 h-10 lg:h-12  text-xs lg:text-base"
             @click="handleClickRemoveFeedback"
           />
-          <div class="flex gap-4 items-center">
+          <div class="flex  items-center">
             <TheButton
               text="Cancel"
-              class="bg-slate-600 text-white font-semibold hover:bg-slate-800 h-12"
+              class="bg-slate-600 text-white font-semibold hover:bg-slate-800 h-10 lg:h-12  text-xs lg:text-base"
               @click="$router.push({ name: 'home' })"
             />
             <TheButton
               text="Save Changes"
-              class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-12"
+              class="bg-purple-600 text-white font-semibold hover:bg-purple-800 h-10 lg:h-12  text-xs lg:text-base ml-4"
               @click="handleClickEditFeedback"
             />
           </div>

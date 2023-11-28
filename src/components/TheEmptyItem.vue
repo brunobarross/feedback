@@ -14,9 +14,9 @@ defineProps({
     <div
       class="text-paragraph-2 text-center m-auto !h-full flex-1 flex flex-col justify-center"
     >
-    <PhPulse size="40" class="block mx-auto opacity-30" />
+    <PhPulse size="40" class="block mx-auto opacity-30 dark:text-white" />
 
-      <p class="opacity-40 mt-2">{{ text }}</p>
+      <p class="text-sm lg:text-base opacity-40 mt-2 dark:text-white">{{ text }}</p>
     </div>
   </template>
   

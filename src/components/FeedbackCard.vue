@@ -1,7 +1,7 @@
 <script setup>
 import { ref,computed } from "vue";
 import { useGlobalStore } from "../stores/GLOBAL.store";
-import { PhChatCircle } from "@phosphor-icons/vue";
+import { PhChatCircle, PhCaretUp } from "@phosphor-icons/vue";
 import TheUpVoteButton from "./TheUpVoteButton.vue";
 import Tag from "./Tag.vue";
 import { storeToRefs } from "pinia";
@@ -46,7 +46,7 @@ const isDisabled = computed(() => {
 
 <template>
   <div
-    class="bg-white rounded p-4 lg:p-8 cursor-pointer mb-6"
+    class="dark:bg-slate-600 bg-white rounded p-6 lg:p-8 cursor-pointer mb-6"
     @click="
       $router.push({
         name: 'feedback',
@@ -60,15 +60,14 @@ const isDisabled = computed(() => {
     <div class="flex justify-between items-center">
       <div class="flex items-start">
         <TheUpVoteButton
-      
         class="hidden lg:flex"
           @up-vote="handleClickUpvote"
           :qtd="quantidadeUpvotes"
           :is-disabled="isDisabled"
         />
         <div class="lg:ml-10">
-          <h3 class="text-sm lg:text-lg font-bold text-slate-700">{{ feedback.title }}</h3>
-          <p class="text-xs lg:text-base text-slate-400 mt-1">
+          <h3 class="text-sm lg:text-lg font-bold dark:text-white text-slate-700">{{ feedback.title }}</h3>
+          <p class="text-xs lg:text-base dark:text-slate-300 text-slate-400 mt-1">
             {{ feedback.description }}
           </p>
           <Tag
@@ -79,14 +78,20 @@ const isDisabled = computed(() => {
         </div>
       </div>
       <div class="hidden lg:flex items-center ">
-        <PhChatCircle :size="24" />
-        <p class="text-sm ml-2 font-bold">{{ feedback.comments.length }}</p>
+        <PhChatCircle :size="24" class="dark:text-white" />
+        <p class="text-sm ml-2 font-bold dark:text-white">{{ feedback.comments.length }}</p>
       </div>
     </div>
-    <div class="flex items-center justify-between mt-2">
+    <div class="flex items-center justify-between mt-6 lg:mt-2">
+      <TheUpVoteButton
+        class="flex lg:hidden"
+          @up-vote="handleClickUpvote"
+          :qtd="quantidadeUpvotes"
+          :is-disabled="isDisabled"
+        />
       <div class="flex lg:hidden items-center ">
-        <PhChatCircle :size="24" />
-        <p class="text-sm ml-2 font-bold">{{ feedback.comments.length }}</p>
+        <PhChatCircle :size="24" class="dark:text-white" />
+        <p class="text-sm ml-2 font-bold dark:text-white">{{ feedback.comments.length }}</p>
       </div>
     </div>
   </div>
