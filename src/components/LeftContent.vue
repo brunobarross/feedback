@@ -4,7 +4,7 @@ import Tag from "./Tag.vue";
 import { useGlobalStore } from "../stores/GLOBAL.store";
 import { storeToRefs } from "pinia";
 
-const { categories } = storeToRefs(useGlobalStore());
+const { categories, menuMobileIsOpen} = storeToRefs(useGlobalStore());
 const emits = defineEmits(["filter"]);
 
 const props = defineProps({
@@ -13,6 +13,11 @@ const props = defineProps({
     required: true
   }
 })
+
+const handleClickMobileTag = (tagId) => {
+  emits.filter(tagId);
+
+};
 
 
 </script>
@@ -32,7 +37,7 @@ const props = defineProps({
       v-for="tag in categories"
       :key="tag.id"
       :tag="tag"
-      @filter="(tagId) => $emit('filter', tagId)"
+      @filter="(tagId) => handleClickMobileTag(tagId)"
       class="hover:bg-pink-600 
       hover:text-slate-100"
       :class="{

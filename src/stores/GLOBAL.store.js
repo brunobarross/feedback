@@ -16,6 +16,9 @@ export const useGlobalStore = defineStore('global', () => {
 
     const feedbackFiltrado = ref([])
 
+
+    const menuMobileIsOpen = ref(false);
+
     const getCategories = async () => {
         const querySnapshot = await getDocs(collection(db, "categories"));
         categories.value = querySnapshot.docs.map((doc) => ({
@@ -66,7 +69,7 @@ export const useGlobalStore = defineStore('global', () => {
             debugger
             const feedbackDoc = doc(db, "feedbacks", feedback.id);
             const docRef = await setDoc(feedbackDoc, {
-               ...obj
+                ...obj
             }, { merge: true });
             console.log("Document written with ID: ");
         }
@@ -145,7 +148,7 @@ export const useGlobalStore = defineStore('global', () => {
 
     }
 
-    const removeFeedback = async (feedbackId) =>{
+    const removeFeedback = async (feedbackId) => {
         try {
             const docRef = await deleteDoc(doc(db, "feedbacks", feedbackId))
         } catch (e) {
@@ -165,6 +168,8 @@ export const useGlobalStore = defineStore('global', () => {
         else if (tag !== 'all' && !filterFeedbacks.length) feedbackFiltrado.value = []
         else feedbackFiltrado.value = filterFeedbacks;
 
+        if (menuMobileIsOpen.value) menuMobileIsOpen.value = false;
+
     }
 
 
@@ -181,8 +186,8 @@ export const useGlobalStore = defineStore('global', () => {
         }
     )
 
-    
 
 
-    return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getUsers, users, getComments, comments, createComment, removeComment, removeUpVote, handleFilteredFeedbacks, feedbackFiltrado, filterApplyed, editFeedback, removeFeedback }
+
+    return { getFeedbacks, getCategories, categories, feedbacks, createFeedback, sendUpVote, getUsers, users, getComments, comments, createComment, removeComment, removeUpVote, handleFilteredFeedbacks, feedbackFiltrado, filterApplyed, editFeedback, removeFeedback, menuMobileIsOpen }
 })

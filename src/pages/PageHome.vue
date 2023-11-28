@@ -8,9 +8,10 @@ import TheHeader from "../components/TheHeader.vue";
 import TheHeaderMobile from '../components/TheHeaderMobile.vue';
 import FeedbackCard from "../components/FeedbackCard.vue";
 import TheEmptyItem from "../components/TheEmptyItem.vue";
+import TheMenuMobile from "../components/TheMenuMobile.vue";
 
 const { getFeedbacks, getCategories, handleFilteredFeedbacks } = useGlobalStore();
-const { feedbacks,  feedbackFiltrado, filterApplyed } = storeToRefs(useGlobalStore());
+const { feedbacks,  feedbackFiltrado, filterApplyed, menuMobileIsOpen } = storeToRefs(useGlobalStore());
 
 const { persistLogin } = useAuthStore();
 
@@ -40,7 +41,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <TheHeaderMobile :feedbacks="feedbackFiltrado"/>
+  <TheHeaderMobile :feedbacks="feedbackFiltrado" />
+  <Transition name="fade"
+  enter-active-class="transition duration-300 ease-out"
+  leave-active-class="transition duration-300 ease-out"
+
+  >
+    <TheMenuMobile v-if="menuMobileIsOpen" @filter="handleFilteredFeedbacks" :filter-applyed="filterApplyed" :user="user"/>
+  </Transition>
+ 
   <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-4">
     <div class="lg:col-span-3 hidden lg:block">
       <LeftContent @filter="handleFilteredFeedbacks" :filter-applyed="filterApplyed"/>
@@ -60,3 +69,22 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active {
+  transition: opacity 0.3s ease-out;
+}
+
+.fade-leave-active {
+  transition: opacity 0.3s ease-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(110vw);
+}
+
+
+
+</style>

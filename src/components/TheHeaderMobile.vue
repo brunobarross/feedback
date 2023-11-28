@@ -4,6 +4,7 @@ import TheButton from "./TheButton.vue";
 import { PhPlus, PhUser } from "@phosphor-icons/vue";
 import { useAuthStore } from "../stores/auth.store";
 import { storeToRefs } from "pinia";
+import { useGlobalStore } from "../stores/GLOBAL.store";
 const props = defineProps({
   feedbacks:{
     type: Array,
@@ -13,6 +14,7 @@ const props = defineProps({
 });
 
 const { makeLogin, signOut } = useAuthStore();
+const {menuMobileIsOpen} = storeToRefs(useGlobalStore());
 
 const { user } = storeToRefs(useAuthStore());
 
@@ -20,13 +22,18 @@ const { user } = storeToRefs(useAuthStore());
 </script>
 
 <template>
+
   <div
-    class="bg-gradient-to-tr from-blue-700 py-4 px-6 flex lg:hidden flex-col justify-between"
+    class="bg-blue-800 py-4 px-6 flex lg:hidden lg:flex-col justify-between items-center h-20"
   >
     <div>
       <h1 class="text-white text-base">Project Name</h1>
       <p class="text-white text-sm">Feedback Board</p>
     </div>
+    <button @click="menuMobileIsOpen = !menuMobileIsOpen">
+      <PhList size="24" color="#fff" weight="bold" />
+    </button>
+
   </div>
   <div class="dark:bg-slate-800
   bg-slate-900 py-2 px-4 rounded  lg:hidden">
@@ -65,4 +72,6 @@ const { user } = storeToRefs(useAuthStore());
       </div>
     </div>
   </div>
+
+  
 </template>
