@@ -50,7 +50,7 @@ onMounted(async () => {
     <TheMenuMobile v-if="menuMobileIsOpen" @filter="handleFilteredFeedbacks" :filter-applyed="filterApplyed" :user="user"/>
   </Transition>
  
-  <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-4">
+  <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-4 mt-28 lg:mt-0">
     <div class="lg:col-span-3 hidden lg:block">
       <LeftContent @filter="handleFilteredFeedbacks" :filter-applyed="filterApplyed"/>
     </div>
@@ -63,7 +63,7 @@ onMounted(async () => {
           :feedback="feedback"
         />
       </div>
-      <div v-else class="mt-6 min-h-[180px] flex flex-col justify-center dark:bg-slate-800 bg-white rounded">
+      <div v-else class="min-h-[180px] flex flex-col justify-center dark:bg-slate-600 bg-white rounded mt-10 lg:mt-6 ">
           <TheEmptyItem  text="There are no feedbacks to display..."  />
         </div>
     </div>

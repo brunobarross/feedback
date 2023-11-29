@@ -22,7 +22,8 @@ const { user } = storeToRefs(useAuthStore());
 </script>
 
 <template>
-
+  <div class="fixed top-0 left-0 w-full z-[1000]">
+    
   <div
     class="bg-blue-800 py-4 px-6 flex lg:hidden lg:flex-col justify-between items-center h-20"
   >
@@ -72,6 +73,8 @@ const { user } = storeToRefs(useAuthStore());
       </div>
     </div>
   </div>
+  </div>
+
 
   
 </template>

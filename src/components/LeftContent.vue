@@ -14,10 +14,7 @@ const props = defineProps({
   }
 })
 
-const handleClickMobileTag = (tagId) => {
-  emits.filter(tagId);
 
-};
 
 
 </script>
@@ -37,7 +34,7 @@ const handleClickMobileTag = (tagId) => {
       v-for="tag in categories"
       :key="tag.id"
       :tag="tag"
-      @filter="(tagId) => handleClickMobileTag(tagId)"
+      @filter="(tagId) => $emit('filter', tagId)"
       class="hover:bg-pink-600 
       hover:text-slate-100"
       :class="{
